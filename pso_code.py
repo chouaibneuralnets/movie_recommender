@@ -48,38 +48,30 @@ class Particle:
         return score
 
 def pso(candidates, score_func, n_particles=15, n_iterations=25, top_n=15):
-    """
-    Enhanced PSO algorithm that returns top N recommendations
-    
+    """ 
     Args:
         candidates: List of movie IDs to choose from
         score_func: Function to evaluate movie quality
         n_particles: Number of particles in the swarm
         n_iterations: Number of iterations to run
         top_n: Number of top recommendations to return
-    
     Returns:
         List of top N movie IDs with highest scores
     """
     if not candidates:
         return []
-    
     # If we have fewer candidates than requested top_n, return all sorted by score
     if len(candidates) <= top_n:
         return sorted(candidates, key=score_func, reverse=True)
-    
     # Initialize particle swarm with random positions
     particles = [
         Particle(random.choice(candidates), score_func, candidates)
         for _ in range(min(n_particles, len(candidates)))
     ]
-    
     # Track global best
     global_best = {"position": particles[0].position, "score": particles[0].best_score}
-    
     # Track all discovered positions and scores
     all_positions = {}
-    
     # Run PSO iterations
     for i in range(n_iterations):
         # Adaptive inertia weight (decreases over time)
@@ -94,8 +86,7 @@ def pso(candidates, score_func, n_particles=15, n_iterations=25, top_n=15):
             # Update global best if needed
             if score > global_best["score"]:
                 global_best["score"] = score
-                global_best["position"] = particle.position
-    
+                global_best["position"] = particle.position 
     # Get top N movies based on discovered scores
     top_movies = sorted(all_positions.items(), key=lambda x: x[1], reverse=True)[:top_n]
     return [movie_id for movie_id, _ in top_movies]

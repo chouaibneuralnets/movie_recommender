@@ -43,12 +43,10 @@ def get_movie_info(items, movie_id, ratings_dict):
         "score": round(ratings_dict.get(movie_id, 0), 2),
         "genres": []
     }
-    
     # Extract all genres for this movie
     genre_columns = ["Action", "Adventure", "Animation", "Children", "Comedy", "Crime", 
                      "Documentary", "Drama", "Fantasy", "Film-Noir", "Horror", "Musical", 
                      "Mystery", "Romance", "Sci-Fi", "Thriller", "War", "Western"]
-    
     for genre in genre_columns:
         if movie[genre].values[0] == 1:
             info["genres"].append(genre)
